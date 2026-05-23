@@ -208,9 +208,11 @@ class CLIPLoaderGGUF:
     @classmethod
     def INPUT_TYPES(s):
         base = nodes.CLIPLoader.INPUT_TYPES()
+        clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
+        file_list = list(filter(lambda x: x.lower().endswith(".gguf"), os.listdir(clip_gguf_dir)))
         return {
             "required": {
-                "clip_name": (s.get_filename_list(),),
+                "clip_name": file_list,
                 "type": base["required"]["type"],
             }
         }
@@ -253,7 +255,9 @@ class CLIPLoaderGGUF:
         return clip
 
     def load_clip(self, clip_name, type="stable_diffusion"):
-        clip_path = folder_paths.get_full_path("clip", clip_name)
+        # clip_path = folder_paths.get_full_path("clip", clip_name)
+        clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
+        clip_path = os.path.join(clip_gguf_dir, clip_name)
         clip_type = getattr(comfy.sd.CLIPType, type.upper(), comfy.sd.CLIPType.STABLE_DIFFUSION)
         return (self.load_patcher([clip_path], clip_type, self.load_data([clip_path])),)
 
@@ -261,7 +265,9 @@ class DualCLIPLoaderGGUF(CLIPLoaderGGUF):
     @classmethod
     def INPUT_TYPES(s):
         base = nodes.DualCLIPLoader.INPUT_TYPES()
-        file_options = (s.get_filename_list(), )
+        # file_options = (s.get_filename_list(), )
+        clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
+        file_options = list(filter(lambda x: x.lower().endswith(".gguf"), os.listdir(clip_gguf_dir)))
         return {
             "required": {
                 "clip_name1": file_options,
@@ -273,8 +279,11 @@ class DualCLIPLoaderGGUF(CLIPLoaderGGUF):
     TITLE = "DualCLIPLoader (GGUF)"
 
     def load_clip(self, clip_name1, clip_name2, type):
-        clip_path1 = folder_paths.get_full_path("clip", clip_name1)
-        clip_path2 = folder_paths.get_full_path("clip", clip_name2)
+        # clip_path1 = folder_paths.get_full_path("clip", clip_name1)
+        # clip_path2 = folder_paths.get_full_path("clip", clip_name2)
+        clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
+        clip_path1 = os.path.join(clip_gguf_dir, clip_name1)
+        clip_path2 = os.path.join(clip_gguf_dir, clip_name2)
         clip_paths = (clip_path1, clip_path2)
         clip_type = getattr(comfy.sd.CLIPType, type.upper(), comfy.sd.CLIPType.STABLE_DIFFUSION)
         return (self.load_patcher(clip_paths, clip_type, self.load_data(clip_paths)),)
@@ -282,7 +291,9 @@ class DualCLIPLoaderGGUF(CLIPLoaderGGUF):
 class TripleCLIPLoaderGGUF(CLIPLoaderGGUF):
     @classmethod
     def INPUT_TYPES(s):
-        file_options = (s.get_filename_list(), )
+        # file_options = (s.get_filename_list(), )
+        clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
+        file_options = list(filter(lambda x: x.lower().endswith(".gguf"), os.listdir(clip_gguf_dir)))
         return {
             "required": {
                 "clip_name1": file_options,
@@ -294,9 +305,13 @@ class TripleCLIPLoaderGGUF(CLIPLoaderGGUF):
     TITLE = "TripleCLIPLoader (GGUF)"
 
     def load_clip(self, clip_name1, clip_name2, clip_name3, type="sd3"):
-        clip_path1 = folder_paths.get_full_path("clip", clip_name1)
-        clip_path2 = folder_paths.get_full_path("clip", clip_name2)
-        clip_path3 = folder_paths.get_full_path("clip", clip_name3)
+        # clip_path1 = folder_paths.get_full_path("clip", clip_name1)
+        # clip_path2 = folder_paths.get_full_path("clip", clip_name2)
+        # clip_path3 = folder_paths.get_full_path("clip", clip_name3)
+        clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
+        clip_path1 = os.path.join(clip_gguf_dir, clip_name1)
+        clip_path2 = os.path.join(clip_gguf_dir, clip_name2)
+        clip_path3 = os.path.join(clip_gguf_dir, clip_name3)
         clip_paths = (clip_path1, clip_path2, clip_path3)
         clip_type = getattr(comfy.sd.CLIPType, type.upper(), comfy.sd.CLIPType.STABLE_DIFFUSION)
         return (self.load_patcher(clip_paths, clip_type, self.load_data(clip_paths)),)
@@ -304,7 +319,9 @@ class TripleCLIPLoaderGGUF(CLIPLoaderGGUF):
 class QuadrupleCLIPLoaderGGUF(CLIPLoaderGGUF):
     @classmethod
     def INPUT_TYPES(s):
-        file_options = (s.get_filename_list(), )
+        # file_options = (s.get_filename_list(), )
+        clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
+        file_options = list(filter(lambda x: x.lower().endswith(".gguf"), os.listdir(clip_gguf_dir)))
         return {
             "required": {
             "clip_name1": file_options,
@@ -317,10 +334,15 @@ class QuadrupleCLIPLoaderGGUF(CLIPLoaderGGUF):
     TITLE = "QuadrupleCLIPLoader (GGUF)"
 
     def load_clip(self, clip_name1, clip_name2, clip_name3, clip_name4, type="stable_diffusion"):
-        clip_path1 = folder_paths.get_full_path("clip", clip_name1)
-        clip_path2 = folder_paths.get_full_path("clip", clip_name2)
-        clip_path3 = folder_paths.get_full_path("clip", clip_name3)
-        clip_path4 = folder_paths.get_full_path("clip", clip_name4)
+        # clip_path1 = folder_paths.get_full_path("clip", clip_name1)
+        # clip_path2 = folder_paths.get_full_path("clip", clip_name2)
+        # clip_path3 = folder_paths.get_full_path("clip", clip_name3)
+        # clip_path4 = folder_paths.get_full_path("clip", clip_name4)
+        clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
+        clip_path1 = os.path.join(clip_gguf_dir, clip_name1)
+        clip_path2 = os.path.join(clip_gguf_dir, clip_name2)
+        clip_path3 = os.path.join(clip_gguf_dir, clip_name3)
+        clip_path4 = os.path.join(clip_gguf_dir, clip_name4)
         clip_paths = (clip_path1, clip_path2, clip_path3, clip_path4)
         clip_type = getattr(comfy.sd.CLIPType, type.upper(), comfy.sd.CLIPType.STABLE_DIFFUSION)
         return (self.load_patcher(clip_paths, clip_type, self.load_data(clip_paths)),)
