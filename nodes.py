@@ -209,10 +209,10 @@ class CLIPLoaderGGUF:
     def INPUT_TYPES(s):
         base = nodes.CLIPLoader.INPUT_TYPES()
         clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
-        file_list = (os.listdir(clip_gguf_dir), )
+        file_options = (os.listdir(clip_gguf_dir), )
         return {
             "required": {
-                "clip_name": file_list,
+                "clip_name": file_options,
                 "type": base["required"]["type"],
             }
         }
@@ -267,7 +267,7 @@ class DualCLIPLoaderGGUF(CLIPLoaderGGUF):
         base = nodes.DualCLIPLoader.INPUT_TYPES()
         # file_options = (s.get_filename_list(), )
         clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
-        file_list = (os.listdir(clip_gguf_dir), )
+        file_options = (os.listdir(clip_gguf_dir), )
         return {
             "required": {
                 "clip_name1": file_options,
@@ -293,7 +293,7 @@ class TripleCLIPLoaderGGUF(CLIPLoaderGGUF):
     def INPUT_TYPES(s):
         # file_options = (s.get_filename_list(), )
         clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
-        file_list = (os.listdir(clip_gguf_dir), )
+        file_options = (os.listdir(clip_gguf_dir), )
         return {
             "required": {
                 "clip_name1": file_options,
@@ -321,7 +321,7 @@ class QuadrupleCLIPLoaderGGUF(CLIPLoaderGGUF):
     def INPUT_TYPES(s):
         # file_options = (s.get_filename_list(), )
         clip_gguf_dir = os.environ["CLIP_GGUF_DIR"]
-        file_list = (os.listdir(clip_gguf_dir), )
+        file_options = (os.listdir(clip_gguf_dir), )
         return {
             "required": {
             "clip_name1": file_options,
