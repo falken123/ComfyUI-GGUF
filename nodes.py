@@ -1,4 +1,5 @@
 # (c) City96 || Apache-2.0 (apache.org/licenses/LICENSE-2.0)
+import os
 import torch
 import logging
 import inspect
@@ -135,7 +136,9 @@ class GGUFModelPatcher(comfy.model_patcher.ModelPatcher):
 class UnetLoaderGGUF:
     @classmethod
     def INPUT_TYPES(s):
-        unet_names = [x for x in folder_paths.get_filename_list("unet_gguf")]
+        # unet_names = [x for x in folder_paths.get_filename_list("unet_gguf")]
+        gguf_dir = os.environ["GGUF_DIR"]
+        unet_names = list(filter(lambda x: x.lower().endswith(".gguf"), os.listdir(gguf_dir)))
         return {
             "required": {
                 "unet_name": (unet_names,),
@@ -165,7 +168,9 @@ class UnetLoaderGGUF:
             ops.Linear.patch_dtype = getattr(torch, patch_dtype)
 
         # init model
-        unet_path = folder_paths.get_full_path("unet", unet_name)
+        # unet_path = folder_paths.get_full_path("unet", unet_name)
+        gguf_dir = os.environ["GGUF_DIR"]
+        unet_path = os.path.join(gguf_dir, unet_name)
         sd, extra = gguf_sd_loader(unet_path)
 
         kwargs = {}
@@ -186,7 +191,9 @@ class UnetLoaderGGUF:
 class UnetLoaderGGUFAdvanced(UnetLoaderGGUF):
     @classmethod
     def INPUT_TYPES(s):
-        unet_names = [x for x in folder_paths.get_filename_list("unet_gguf")]
+        # unet_names = [x for x in folder_paths.get_filename_list("unet_gguf")]
+        gguf_dir = os.environ["GGUF_DIR"]
+        unet_names = list(filter(lambda x: x.lower().endswith(".gguf"), os.listdir(gguf_dir)))
         return {
             "required": {
                 "unet_name": (unet_names,),
@@ -326,4 +333,3 @@ NODE_CLASS_MAPPINGS = {
     "QuadrupleCLIPLoaderGGUF": QuadrupleCLIPLoaderGGUF,
     "UnetLoaderGGUFAdvanced": UnetLoaderGGUFAdvanced,
 }
-
